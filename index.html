@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Search</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Arvo:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Search Five-Letter Words</h1>
+        <div class="controls">
+            <input type="text" id="searchBar" placeholder="Type to search...">
+            <label class="toggle-switch" title="Add more words">
+                <input type="checkbox" id="toggleList">
+                <span class="slider"></span>
+            </label>
+        </div>
+        <div id="wordGroups" class="word-groups"></div>
+
+        <div class="wordle-data-section">
+            <h2>Wordle Data Insights</h2>
+            <div class="wordle-data-images">
+                <img src="letter_position_heatmap.png" alt="Wordle Data 1" class="gallery-image">
+                <img src="start_letter_frequency.png" alt="Wordle Data 2" class="gallery-image">
+                <img src="common_word_endings.png" alt="Wordle Data 3" class="gallery-image">
+                <img src="word_complexity_analysis.png" alt="Wordle Data 4" class="gallery-image">
+            </div>
+        </div>
+    </div>
+
+    <div id="lightbox" class="lightbox">
+        <span class="close">&times;</span>
+        <img class="lightbox-content" id="lightboxImage">
+        <a class="prev" id="prev">&#10094;</a>
+        <a class="next" id="next">&#10095;</a>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

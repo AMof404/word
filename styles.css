@@ -1,0 +1,281 @@
+/* General styles for the page */
+body {
+    font-family: 'Arvo', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.container {
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 700px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 2em;
+    font-weight: 600;
+    color: #222;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    width: 100%;
+    flex-wrap: nowrap;
+}
+
+#searchBar {
+    flex-grow: 1;
+    padding: 14px 20px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 1.1em;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.05);
+    font-family: Arvo;
+}
+
+#searchBar:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.2);
+}
+
+.toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 28px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ddd;
+    border-radius: 34px;
+    transition: 0.4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: 0.4s;
+}
+
+input:checked + .slider {
+    background-color: #007bff;
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px);
+}
+
+.word-groups {
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 10px;
+    border-radius: 8px;
+    background-color: #fafafa;
+    border: 1px solid #eee;
+}
+
+.group-header {
+    padding: 15px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #555;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.group-header:hover {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.group-content {
+    display: none;
+    padding-left: 20px;
+    margin-bottom: 10px;
+}
+
+.word-item {
+    padding: 12px;
+    background-color: #fff;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    font-size: 1em;
+    color: #333;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    border: 1px solid #eee;
+}
+
+.word-item:hover {
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Wordle Data Section */
+.wordle-data-section {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+}
+
+.wordle-data-section h2 {
+    font-size: 1.6em;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: 600;
+    text-align: center;
+}
+
+.wordle-data-images {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.wordle-data-images img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.wordle-data-images img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Lightbox Modal */
+.lightbox {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    padding-top: 60px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.lightbox-content {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.prev,
+.next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -50px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+}
+
+.prev {
+    left: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.next {
+    right: 0;
+    border-radius: 0 3px 3px 0;
+}
+
+.prev:hover,
+.next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.done-message {
+    font-size: 0.9em;          /* Slightly smaller font */
+    color: #ff6f61;            /* Eye-catching color */
+    font-style: italic;        /* Italics for emphasis */
+    margin-left: 8px;          /* Spacing between word and message */
+    background-color: #fff3f0; /* Light background for better readability */
+    padding: 2px 4px;          /* Add a little padding for neatness */
+    border-radius: 4px;        /* Rounded edges for a modern look */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .controls {
+        flex-direction: row; /* Ensure elements remain in a row */
+        justify-content: space-between; /* Keep space between elements */
+        gap: 5px; /* Reduce the gap to fit better */
+    }
+
+    #searchBar {
+        flex-grow: 1; /* Allow search bar to grow in available space */
+        min-width: 150px; /* Set a minimum width to prevent too much shrinking */
+    }
+
+    .toggle-switch {
+        flex-shrink: 0; /* Ensure toggle switch does not shrink */
+    }
+}

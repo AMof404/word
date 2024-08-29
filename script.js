@@ -16652,7 +16652,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (alreadyUsedList.includes(word)) {
                     const doneMessage = document.createElement('span');
                     doneMessage.classList.add('done-message');
-                    doneMessage.textContent = ' (used before)';
+                    doneMessage.textContent = ' ( previously used)';
                     wordItem.appendChild(doneMessage);
                 }
 

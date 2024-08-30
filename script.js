@@ -16003,6 +16003,7 @@ const alreadyUsedList = [
     "linen",
     "liner",
     "lingo",
+    "lithe",
     "liver",
     "local",
     "locus",
@@ -16613,12 +16614,45 @@ const alreadyUsedList = [
     "zesty",
 
 ];
-
 document.addEventListener("DOMContentLoaded", function() {
     // Word grouping and search functionality
     const wordGroupsContainer = document.getElementById('wordGroups');
     const searchBar = document.getElementById('searchBar');
     const toggleList = document.getElementById('toggleList');
+    const filterButton = document.getElementById("filterButton");
+    const filterModal = document.getElementById("filterModal");
+    const closeModal = document.getElementsByClassName("close-modal")[0];
+    const applyFilterButton = document.getElementById("applyFilter");
+    const resetFilterButton = document.createElement('button'); // New button for resetting filter
+
+    resetFilterButton.textContent = '✕';
+    resetFilterButton.className = 'reset-filter-button';
+    searchBar.parentNode.insertBefore(resetFilterButton, searchBar); // Add button before the wordGroups container
+
+    // Inputs for correct and wrong positions
+    const correctPositionInputs = [
+        document.getElementById("correctPosition1"),
+        document.getElementById("correctPosition2"),
+        document.getElementById("correctPosition3"),
+        document.getElementById("correctPosition4"),
+        document.getElementById("correctPosition5")
+    ];
+
+    const wrongPositionInputs = [
+        document.getElementById("wrongPosition1"),
+        document.getElementById("wrongPosition2"),
+        document.getElementById("wrongPosition3"),
+        document.getElementById("wrongPosition4"),
+        document.getElementById("wrongPosition5")
+    ];
+
+    const excludedLettersInput = document.getElementById("excludedLetters");
+
+    let filterCriteria = {
+        correctPositions: [],
+        wrongPositions: [],
+        excludedLetters: []
+    };
 
     // Function to group words by the first letter
     function groupWords(words) {
@@ -16632,7 +16666,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // Function to display grouped words
-    function displayGroupedWords(groupedWords, openGroup = null) {
+    function displayGroupedWords(groupedWords, openGroups = []) {
         wordGroupsContainer.innerHTML = '';
         Object.keys(groupedWords).sort().forEach(letter => {
             const groupHeader = document.createElement('div');
@@ -16641,7 +16675,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             const groupContent = document.createElement('div');
             groupContent.classList.add('group-content');
-            groupContent.style.display = openGroup === letter ? 'block' : 'none';
+            groupContent.style.display = openGroups.includes(letter) ? 'block' : 'none';
 
             groupedWords[letter].forEach(word => {
                 const wordItem = document.createElement('div');
@@ -16652,7 +16686,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (alreadyUsedList.includes(word)) {
                     const doneMessage = document.createElement('span');
                     doneMessage.classList.add('done-message');
-                    doneMessage.textContent = ' ( previously used)';
+                    doneMessage.textContent = ' (previously used)';
                     wordItem.appendChild(doneMessage);
                 }
 
@@ -16681,13 +16715,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Event listener for search input
     searchBar.addEventListener('input', () => {
-        const searchQuery = searchBar.value.toLowerCase();
-        const currentWordList = getCurrentWordList();
-        const filteredWords = currentWordList.filter(word => word.includes(searchQuery));
-        const filteredGroupedWords = groupWords(filteredWords);
-
-        const openGroup = searchQuery && filteredWords.length > 0 ? filteredWords[0].charAt(0).toUpperCase() : null;
-        displayGroupedWords(filteredGroupedWords, openGroup);
+        performSearch();
     });
 
     // Event listener for toggle switch
@@ -16695,6 +16723,124 @@ document.addEventListener("DOMContentLoaded", function() {
         groupedWords = groupWords(getCurrentWordList());
         displayGroupedWords(groupedWords);
     });
+
+    // Event listener for reset filter button
+    resetFilterButton.addEventListener('click', () => {
+        searchBar.value = '';
+        filterCriteria = {
+            correctPositions: [],
+            wrongPositions: [],
+            excludedLetters: []
+        };
+        groupedWords = groupWords(getCurrentWordList());
+        displayGroupedWords(groupedWords);
+    });
+
+    // Modal controls
+    filterButton.onclick = function() {
+        if (filterModal) {
+            filterModal.style.display = "block";
+        } else {
+            console.error("filterModal element not found.");
+        }
+    };
+
+    closeModal.onclick = function() {
+        if (filterModal) {
+            filterModal.style.display = "none";
+        } else {
+            console.error("filterModal element not found.");
+        }
+    };
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+        if (event.target === filterModal) {
+            filterModal.style.display = "none";
+        }
+    };
+
+    // Update filter criteria and perform search when applying filter
+    applyFilterButton.onclick = function() {
+        filterCriteria.correctPositions = correctPositionInputs.map(input => input.value || '_');
+        filterCriteria.wrongPositions = wrongPositionInputs.map(input => input.value).filter(val => val);
+        filterCriteria.excludedLetters = excludedLettersInput.value.split('').filter(val => val);
+
+        filterModal.style.display = "none";
+
+        // Perform search with the updated filter
+        performSearch();
+    };
+
+    // Perform search with filters
+    function performSearch() {
+        const searchTerm = searchBar ? searchBar.value.toLowerCase() : '';
+
+        // Filter the word list based on search term and filter criteria
+        const filteredWords = getCurrentWordList().filter(word => {
+            // Check if the word contains the search term
+            if (!word.includes(searchTerm)) {
+                return false;
+            }
+
+            // Check correct positions
+            for (let i = 0; i < filterCriteria.correctPositions.length; i++) {
+                if (filterCriteria.correctPositions[i] !== '_' && filterCriteria.correctPositions[i] !== word[i]) {
+                    return false;
+                }
+            }
+
+            // Check wrong positions
+            for (let i = 0; i < filterCriteria.wrongPositions.length; i++) {
+                if (!word.includes(filterCriteria.wrongPositions[i]) || word[filterCriteria.wrongPositions[i]] === filterCriteria.wrongPositions[i]) {
+                    return false;
+                }
+            }
+
+            // Check excluded letters
+            for (let i = 0; i < filterCriteria.excludedLetters.length; i++) {
+                if (word.includes(filterCriteria.excludedLetters[i])) {
+                    return false;
+                }
+            }
+
+            return true;
+        });
+
+        // Determine which letter groups should be open based on the filtered words
+        const openGroups = [...new Set(filteredWords.map(word => word.charAt(0).toUpperCase()))];
+
+        // Display the filtered words with the appropriate groups open
+        const filteredGroupedWords = groupWords(filteredWords);
+        displayGroupedWords(filteredGroupedWords, openGroups);
+    }
+
+
+    // Function to display words
+    function displayWords(words) {
+        wordGroupsContainer.innerHTML = ''; // Clear previous results
+
+        if (words.length === 0) {
+            wordGroupsContainer.innerHTML = '<p>No matching words found.</p>';
+            return;
+        }
+
+        words.forEach(word => {
+            const wordItem = document.createElement('div');
+            wordItem.className = 'word-item';
+            wordItem.textContent = word;
+
+            // Check if the word is in the alreadyUsedList
+            if (alreadyUsedList.includes(word)) {
+                const doneMessage = document.createElement('span');
+                doneMessage.classList.add('done-message');
+                doneMessage.textContent = ' (previously used)';
+                wordItem.appendChild(doneMessage);
+            }
+
+            wordGroupsContainer.appendChild(wordItem);
+        });
+    }
 
     // Image Gallery Lightbox functionality
     const items = document.querySelectorAll('.carousel-item');

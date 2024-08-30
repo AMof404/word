@@ -11,12 +11,49 @@
     <div class="container">
         <h1>Search Five-Letter Words</h1>
         <div class="controls">
-            <input type="text" id="searchBar" placeholder="Type to search...">
-            <label class="toggle-switch" title="Add more words">
+            <div class="search-bar-wrapper">
+                <input type="text" id="searchBar" placeholder="Type to search...">
+                <button id="filterButton" class="filter-button" title="Filter Options">&#9881;</button>
+            </div>
+            <label class="toggle-switch" title="Additional 5 letter words (not neccessarily possible words)">
                 <input type="checkbox" id="toggleList">
                 <span class="slider"></span>
             </label>
         </div>
+
+        <!-- Modal Structure -->
+        <div id="filterModal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Filter Words</h2>
+                <div class="filter-section">
+                    <label for="correctPositions">Correct Positions:</label>
+                    <div class="letter-inputs">
+                        <input type="text" id="correctPosition1" maxlength="1">
+                        <input type="text" id="correctPosition2" maxlength="1">
+                        <input type="text" id="correctPosition3" maxlength="1">
+                        <input type="text" id="correctPosition4" maxlength="1">
+                        <input type="text" id="correctPosition5" maxlength="1">
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <label for="wrongPositions">Wrong Positions:</label>
+                    <div class="letter-inputs">
+                        <input type="text" id="wrongPosition1" maxlength="1">
+                        <input type="text" id="wrongPosition2" maxlength="1">
+                        <input type="text" id="wrongPosition3" maxlength="1">
+                        <input type="text" id="wrongPosition4" maxlength="1">
+                        <input type="text" id="wrongPosition5" maxlength="1">
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <label for="excludedLetters">Excluded Letters:</label>
+                    <input type="text" id="excludedLetters" placeholder="e.g., a">
+                </div>
+                <button id="applyFilter" class="apply-filter-button">Apply Filter</button>
+            </div>
+        </div>
+
         <div id="wordGroups" class="word-groups"></div>
 
         <div class="wordle-data-section">

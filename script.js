@@ -15968,6 +15968,7 @@ const alreadyUsedList = [
     "kebab",
     "khaki",
     "kiosk",
+    "knave",
     "knead",
     "kneel",
     "knelt",
@@ -16084,6 +16085,7 @@ const alreadyUsedList = [
     "mulch",
     "mummy",
     "mural",
+    "mushy",
     "music",
     "musty",
 
@@ -16377,6 +16379,7 @@ const alreadyUsedList = [
     "spire",
     "splat",
     "spoke",
+    "spout",
     "spray",
     "spurt",
     "squad",
